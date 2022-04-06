@@ -1,6 +1,116 @@
 /******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/js/modules/playVideo.js":
+/*!*************************************!*\
+  !*** ./src/js/modules/playVideo.js ***!
+  \*************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ VideoPlayer; }
+/* harmony export */ });
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.object.to-string.js */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each.js */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var VideoPlayer = /*#__PURE__*/function () {
+  function VideoPlayer(triggers, overlay) {
+    _classCallCheck(this, VideoPlayer);
+
+    this.btns = document.querySelectorAll(triggers);
+    this.overlay = document.querySelector(overlay);
+    this.close = this.overlay.querySelector('.close'); //YouTube IFrame Player API
+  } // #4
+
+
+  _createClass(VideoPlayer, [{
+    key: "bindTriggers",
+    value: function bindTriggers() {
+      var _this = this;
+
+      this.btns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          if (document.querySelector('iframe#frame')) {
+            _this.overlay.style.display = 'flex';
+          } else {
+            var path = btn.getAttribute('data-url');
+
+            _this.createPlayer(path);
+          } // // если плеер уже был создан ранее с другим
+          // // видео, нужно удалить iframe#frame и
+          // // восстановить div#frame, чтобы создать
+          // // новый плеер
+          // if (this.player) {
+          //     this.player.destroy();
+          // }
+          // this.createPlayer(btn.dataset.url);
+
+        });
+      });
+    } // #5
+
+  }, {
+    key: "bindCloseBtn",
+    value: function bindCloseBtn() {
+      var _this2 = this;
+
+      // Один элемент
+      this.close.addEventListener('click', function () {
+        _this2.overlay.style.display = 'none';
+
+        _this2.player.stopVideo();
+      });
+    } // #3
+
+  }, {
+    key: "createPlayer",
+    value: function createPlayer(url) {
+      // Player('frame' <<сюда помещаем с index.html id и создаст новый плеер
+      this.player = new YT.Player('frame', {
+        // по 100% подстраиваем под верстку
+        height: '100%',
+        width: '100%',
+        // vieoid самый важный параметр сюда будет подргужать уникальй ид котороый будет на ютубе
+        videoId: "".concat(url)
+      });
+      console.log(this.player);
+      this.overlay.style.display = 'flex';
+    } // плеер подлючили #2
+
+  }, {
+    key: "init",
+    value: function init() {
+      var tag = document.createElement('script'); // Устанавливаем у него атрибут src у script
+
+      tag.src = "https://www.youtube.com/iframe_api"; // находим первый скрипт на странице
+
+      var firstScriptTag = document.getElementsByTagName('script')[0]; //обращаемся к главному родителю и прямо перед первым скриптом помещаем скрипт с iframe.api
+
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      this.bindTriggers();
+      this.bindCloseBtn();
+    }
+  }]);
+
+  return VideoPlayer;
+}();
+
+
+
+/***/ }),
+
 /***/ "./src/js/modules/slider.js":
 /*!**********************************!*\
   !*** ./src/js/modules/slider.js ***!
@@ -4182,12 +4292,18 @@ var __webpack_exports__ = {};
   \************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/slider */ "./src/js/modules/slider.js");
+/* harmony import */ var _modules_playVideo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/playVideo */ "./src/js/modules/playVideo.js");
+
 
 window.addEventListener('DOMContentLoaded', function () {
   // уже импортирован класс и мы на основе этого класса создаем новый обьект котороый и будем использовать
   var slider = new _modules_slider__WEBPACK_IMPORTED_MODULE_0__["default"]('.page', '.next'); // у каждого обьекта slider будут свои методы и свои свойства и причем они будут различны , вызываем render Так как это обьект
 
   slider.render(); // метод render обьеденяет всед ругие функции которые были прописаны в этом классе
+  // .showup общая секция чтобы мы четко сказали в какой секции есть кнопка play потому что она несоклько раз будет повторятся 
+
+  var player = new _modules_playVideo__WEBPACK_IMPORTED_MODULE_1__["default"]('.showup .play', '.overlay');
+  player.init();
 });
 }();
 /******/ })()

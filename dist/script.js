@@ -72,26 +72,45 @@ var Slider = /*#__PURE__*/function () {
     _classCallCheck(this, Slider);
 
     // те вещи которыое описывают наш слайдер до того как он будет работать
-    this.page = document.querySelector(page); // получить всех детей которые находятся на этой странице
+    this.page = document.querySelector(page); // получить всех детей которые находятся на этой странице children – коллекция детей, которые являются элементами.
 
     this.slides = this.page.children; // потому что в первом слайдера одна стрелка, а во втором слайде две стрелки
-    // буду использовать псевдо массив элементов даже если там будет один
+    // буду использовать псевдомассив элементов даже если там будет один
 
     this.btns = document.querySelectorAll(btns); // текущий слайд и куда мы будем двигатся дальше
 
     this.slideIndex = 1;
-  }
+  } // метод
+
 
   _createClass(Slider, [{
     key: "showSlides",
     value: function showSlides(n) {
+      var _this = this;
+
       if (n > this.slides.length) {
         this.slideIndex = 1;
       }
 
       if (n < 1) {
         this.slideIndex = this.slides.length;
-      } // Array.from(this.slides).forEach(item => {
+      }
+
+      try {
+        // это свойство мы с вами получаем до того мы где нибудь исопльзуем showSlides
+        this.hanson.style.opacity = '0';
+
+        if (n === 3) {
+          this.hanson.classList.add('animated');
+          setTimeout(function () {
+            _this.hanson.style.opacity = '1';
+
+            _this.hanson.classList.add('fadeInLeft');
+          }, 3000);
+        } else {
+          this.hanson.classList.remove('fadeInLeft');
+        }
+      } catch (error) {} // Array.from(this.slides).forEach(item => { потому что полувем html collection
 
 
       _toConsumableArray(this.slides).forEach(function (item) {
@@ -99,28 +118,43 @@ var Slider = /*#__PURE__*/function () {
       }); // показываем тот который нас интересует . Если в проекте не блочная верстка а флекс то нужно поменять
 
 
-      this.slides[this.slideIndex - 1].style.display = 'block';
+      this.slides[this.slideIndex - 1].style.display = 'block'; // показать учителя мой варинат
+      // if (this.slideIndex == 3) {
+      //     let hanson = document.querySelector('.hanson');
+      //     hanson.style.display = 'none';
+      //     setTimeout(() => {
+      //         hanson.style.display = 'block';
+      //     }, 5000);
+      // }
     }
   }, {
     key: "plusSlides",
     value: function plusSlides(n) {
       this.showSlides(this.slideIndex += n);
-    }
+    } // главный метод - render 
+
   }, {
     key: "render",
     value: function render() {
-      var _this = this;
+      var _this2 = this;
 
-      // это псевдомассив даже если одна кнопка querselecall
+      try {
+        this.hanson = document.querySelector('.hanson');
+      } catch (error) {} // это псевдомассив даже если одна кнопка querselecall
+
+
       this.btns.forEach(function (item) {
         item.addEventListener('click', function () {
-          _this.plusSlides(1);
-        });
-        item.parentNode.previousElementSibling.addEventListener('click', function (e) {
-          e.preventDefault();
-          _this.slideIndex = 1;
+          // пока что у нас одна стрелка вперед
+          _this2.plusSlides(1);
+        }); // Родитель доступен через parentNode
 
-          _this.showSlides(_this.slideIndex);
+        item.parentNode.previousElementSibling.addEventListener('click', function (e) {
+          // это ссылка поэтому обьект события и preventDefault
+          e.preventDefault();
+          _this2.slideIndex = 1;
+
+          _this2.showSlides(_this2.slideIndex);
         });
       }); // обращаясь к this первому это значит что мы обращаемся к свойству или методу которое существует внутри
       // экземплряра класса  
@@ -4151,9 +4185,9 @@ __webpack_require__.r(__webpack_exports__);
 
 window.addEventListener('DOMContentLoaded', function () {
   // уже импортирован класс и мы на основе этого класса создаем новый обьект котороый и будем использовать
-  var slider = new _modules_slider__WEBPACK_IMPORTED_MODULE_0__["default"]('.page', '.next'); // у каждого обьекта slider будут свои методы и свои свойства и причем они будут различны 
+  var slider = new _modules_slider__WEBPACK_IMPORTED_MODULE_0__["default"]('.page', '.next'); // у каждого обьекта slider будут свои методы и свои свойства и причем они будут различны , вызываем render Так как это обьект
 
-  slider.render();
+  slider.render(); // метод render обьеденяет всед ругие функции которые были прописаны в этом классе
 });
 }();
 /******/ })()

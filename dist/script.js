@@ -32,6 +32,7 @@ var VideoPlayer = /*#__PURE__*/function () {
     this.btns = document.querySelectorAll(triggers);
     this.overlay = document.querySelector(overlay);
     this.close = this.overlay.querySelector('.close'); //YouTube IFrame Player API
+    // https://developers.google.com/youtube/iframe_api_reference?hl=ru
   } // #4
 
 
@@ -42,6 +43,7 @@ var VideoPlayer = /*#__PURE__*/function () {
 
       this.btns.forEach(function (btn) {
         btn.addEventListener('click', function () {
+          // если плеер на странице уже сформирован мы не будем его пересоздавать а просто откроем модальное окно 
           if (document.querySelector('iframe#frame')) {
             _this.overlay.style.display = 'flex';
           } else {
@@ -72,6 +74,13 @@ var VideoPlayer = /*#__PURE__*/function () {
 
         _this2.player.stopVideo();
       });
+      this.overlay.addEventListener('click', function (e) {
+        if (e.target === _this2.overlay) {
+          _this2.overlay.style.display = 'none';
+
+          _this2.player.stopVideo();
+        }
+      });
     } // #3
 
   }, {
@@ -83,7 +92,8 @@ var VideoPlayer = /*#__PURE__*/function () {
         height: '100%',
         width: '100%',
         // vieoid самый важный параметр сюда будет подргужать уникальй ид котороый будет на ютубе
-        videoId: "".concat(url)
+        videoId: "".concat(url) // url подставляем динамически
+
       });
       console.log(this.player);
       this.overlay.style.display = 'flex';
@@ -98,14 +108,16 @@ var VideoPlayer = /*#__PURE__*/function () {
 
       var firstScriptTag = document.getElementsByTagName('script')[0]; //обращаемся к главному родителю и прямо перед первым скриптом помещаем скрипт с iframe.api
 
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); // ассинхронное подключение
+
       this.bindTriggers();
       this.bindCloseBtn();
     }
   }]);
 
   return VideoPlayer;
-}();
+}(); // каждый экзмепляр это отдельный обьект 
+
 
 
 

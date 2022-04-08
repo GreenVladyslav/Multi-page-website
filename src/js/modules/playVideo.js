@@ -4,11 +4,13 @@ export default class VideoPlayer {
         this.overlay = document.querySelector(overlay);
         this.close = this.overlay.querySelector('.close');
         //YouTube IFrame Player API
+        // https://developers.google.com/youtube/iframe_api_reference?hl=ru
     }
     // #4
     bindTriggers() {
         this.btns.forEach(btn => {
             btn.addEventListener('click', () => {
+                // если плеер на странице уже сформирован мы не будем его пересоздавать а просто откроем модальное окно 
                 if (document.querySelector('iframe#frame')) {
                     this.overlay.style.display = 'flex';
                 } else {
@@ -26,6 +28,9 @@ export default class VideoPlayer {
                 // this.createPlayer(btn.dataset.url);
             });
         });
+
+
+
     }
     // #5
     bindCloseBtn() {
@@ -33,6 +38,13 @@ export default class VideoPlayer {
         this.close.addEventListener('click', () => {
             this.overlay.style.display = 'none';
             this.player.stopVideo();
+        });
+
+        this.overlay.addEventListener('click', (e) => {
+            if (e.target === this.overlay) {
+                this.overlay.style.display = 'none';
+                this.player.stopVideo();
+            }
         });
     }
     // #3
@@ -44,6 +56,7 @@ export default class VideoPlayer {
             width: '100%',
             // vieoid самый важный параметр сюда будет подргужать уникальй ид котороый будет на ютубе
             videoId: `${url}`
+            // url подставляем динамически
         });
 
         console.log(this.player);
@@ -58,8 +71,10 @@ export default class VideoPlayer {
         const firstScriptTag = document.getElementsByTagName('script')[0];
         //обращаемся к главному родителю и прямо перед первым скриптом помещаем скрипт с iframe.api
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
+        // ассинхронное подключение
         this.bindTriggers();
-        this.bindCloseBtn();
-    }
+        this.bindCloseBtn();   
+     }
 }
+
+// каждый экзмепляр это отдельный обьект 

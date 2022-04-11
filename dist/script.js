@@ -393,7 +393,8 @@ var MiniSlider = /*#__PURE__*/function (_Slider) {
     _classCallCheck(this, MiniSlider);
 
     return _super.call(this, container, next, prev, activeClass, animate, autoplay);
-  }
+  } // #2
+
 
   _createClass(MiniSlider, [{
     key: "decorizeSlides",
@@ -419,36 +420,63 @@ var MiniSlider = /*#__PURE__*/function (_Slider) {
         this.slides[0].querySelector('.card__title').style.opacity = '1';
         this.slides[0].querySelector('.card__controls-arrow').style.opacity = '1';
       }
-    }
+    } //#4
+
   }, {
     key: "nextSlide",
     value: function nextSlide() {
-      if (this.slides[1].tagName == "BUTTON" && this.slides[2].tagName == "BUTTON") {
-        this.container.appendChild(this.slides[0]); // slide с отзывом
-
-        this.container.appendChild(this.slides[1]); // btn
-
-        this.container.appendChild(this.slides[2]); // btn 2
-
-        this.decorizeSlides();
-      } else if (this.slides[1].tagName == "BUTTON") {
-        this.container.appendChild(this.slides[0]); // slide с отзывом
-
-        this.container.appendChild(this.slides[1]); // btn
-
-        this.decorizeSlides();
-      } else {
-        this.container.appendChild(this.slides[0]);
-        this.decorizeSlides();
+      // if(this.slides[1].tagName == "BUTTON" && this.slides[2].tagName == "BUTTON") {
+      //     this.container.appendChild(this.slides[0]); // slide с отзывом
+      //     this.container.appendChild(this.slides[1]); // btn
+      //     this.container.appendChild(this.slides[2]); // btn 2
+      //     this.decorizeSlides();
+      // } else if (this.slides[1].tagName == "BUTTON") {
+      //     this.container.appendChild(this.slides[0]); // slide с отзывом
+      //     this.container.appendChild(this.slides[1]); // btn
+      //     this.decorizeSlides();
+      // } else {
+      //     this.container.appendChild(this.slides[0]);
+      //     this.decorizeSlides();
+      // }
+      // Пропуск кнопок при переключение слайдеров номер два
+      for (var i = 1; i < this.slides.length; i++) {
+        if (this.slides[i].tagName !== "BUTTON") {
+          this.container.appendChild(this.slides[0]);
+          this.decorizeSlides();
+          break;
+        } else {
+          this.container.appendChild(this.slides[i]);
+          i--;
+        }
       }
     }
   }, {
-    key: "bindTriggers",
-    value: function bindTriggers() {
+    key: "autoplayGo",
+    value: function autoplayGo() {
       var _this2 = this;
 
+      var autoplay = setInterval(function () {
+        _this2.nextSlide();
+      }, 4000); // находим родителия например первого слайдера по факту это весь слайдеры (Все
+
+      this.slides[0].parentNode.addEventListener('mouseenter', function () {
+        clearInterval(autoplay);
+      });
+      this.next.addEventListener('mouseenter', function () {
+        clearInterval(autoplay);
+      });
+      this.prev.addEventListener('mouseenter', function () {
+        clearInterval(autoplay);
+      });
+    } // #3
+
+  }, {
+    key: "bindTriggers",
+    value: function bindTriggers() {
+      var _this3 = this;
+
       this.next.addEventListener('click', function () {
-        _this2.nextSlide(); // добавляяем в конец списка этих элементов опредленный элемент 
+        _this3.nextSlide(); // добавляяем в конец списка этих элементов опредленный элемент 
         // this.container.appendChild(this.slides[0]); //  БЫЛО 3стр
         // this.decorizeSlides();
 
@@ -456,14 +484,14 @@ var MiniSlider = /*#__PURE__*/function (_Slider) {
       this.prev.addEventListener('click', function () {
         // классчиеский паттерн количетсво слайдов минус один 
         // я хочу перебрать каждый элемент в массиве slides с конца и если последний элемент который там есть будет являтся кнопкой то я буду его пропускать 
-        for (var i = _this2.slides.length - 1; i > 0; i--) {
-          if (_this2.slides[i].tagName !== "BUTTON") {
+        for (var i = _this3.slides.length - 1; i > 0; i--) {
+          if (_this3.slides[i].tagName !== "BUTTON") {
             // так что если элемент с конца не кнопка то берем последний элемент и помещаем перед первым
-            var active = _this2.slides[i];
+            var active = _this3.slides[i];
 
-            _this2.container.insertBefore(active, _this2.slides[0]);
+            _this3.container.insertBefore(active, _this3.slides[0]);
 
-            _this2.decorizeSlides();
+            _this3.decorizeSlides();
 
             break; // когда условие выполнится этот цикл остановится когда последний слайд отправится на первую позицию
           }
@@ -474,21 +502,30 @@ var MiniSlider = /*#__PURE__*/function (_Slider) {
         // this.decorizeSlides(); БЫЛО 5стр 
 
       });
-    }
+    } // #1
+
   }, {
     key: "init",
     value: function init() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.container.style.cssText = "\n            display: flex;\n            flex-wrap: wrap;\n            overflow: hidden;\n            align-items: flex-start;\n        ";
       this.bindTriggers();
       this.decorizeSlides();
 
       if (this.autoplay) {
-        setInterval(function () {
-          return _this3.nextSlide();
-        }, 5000);
+        this.autoplayGo();
       }
+
+      this.slides[0].parentNode.addEventListener('mouseleave', function () {
+        _this4.autoplayGo();
+      });
+      this.next.addEventListener('mouseleave', function () {
+        _this4.autoplayGo();
+      });
+      this.prev.addEventListener('mouseleave', function () {
+        _this4.autoplayGo();
+      });
     }
   }]);
 

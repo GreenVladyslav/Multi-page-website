@@ -1,9 +1,10 @@
 import Slider from './slider';
 
 export default class MainSlider extends Slider {
-    constructor(page, btns) {
-        // this.slides Будет тоже по умолчанию так как он зависит от this.page.children
-        super(page, btns);
+    constructor(btns) {
+        // this.slides Будет тоже по умолчанию так как он зависит от this.container.children
+        super(btns);
+        // автоматические наследует 
     }
 
     // метод

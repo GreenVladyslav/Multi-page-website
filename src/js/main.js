@@ -1,6 +1,7 @@
 import MainSlider from './modules/slider/slider-main';
 import MiniSlider from './modules/slider/slider-mini';
 import VideoPlayer from './modules/playVideo';
+import Difference from './modules/difference';
 
 window.addEventListener('DOMContentLoaded', () => {
     // уже импортирован класс и мы на основе этого класса создаем новый обьект котороый и будем использовать
@@ -38,4 +39,6 @@ window.addEventListener('DOMContentLoaded', () => {
     // .showup общая секция чтобы мы четко сказали в какой секции есть кнопка play потому что она несоклько раз будет повторятся 
     const player = new VideoPlayer('.showup .play', '.overlay');
     player.init();
+
+    new Difference('.officerold', '.officernew', '.officer__card-item').init();
 });     

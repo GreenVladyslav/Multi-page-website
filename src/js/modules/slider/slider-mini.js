@@ -41,43 +41,25 @@ export default class MiniSlider extends Slider {
         //     this.container.appendChild(this.slides[0]);
         //     this.decorizeSlides();
         // }
-        
-        // Пропуск кнопок при переключение слайдеров номер два
-        for (let i = 1; i < this.slides.length; i++) {
+
+
+        // // Пропуск кнопок при переключение слайдеров номер два
+        for (let i = this.slides.length -1; i > 0; i--) {
             if (this.slides[i].tagName !== "BUTTON") {
-                this.container.appendChild(this.slides[0]);
+                // так что если элемент с конца не кнопка то берем последний элемент и помещаем перед первым
+                let active = this.slides[0];
+                this.container.insertBefore(active, this.slides[i]);
                 this.decorizeSlides();
-                break;
-            } else {
-                this.container.appendChild(this.slides[i]);
-                i--;
+                break; // когда условие выполнится этот цикл остановится когда последний слайд отправится на первую позицию
             }
         }
-    }
-
-    autoplayGo() {
-        let autoplay = setInterval(() => {
-            this.nextSlide();
-        }, 4000);
-        // находим родителия например первого слайдера по факту это весь слайдеры (Все
-        this.slides[0].parentNode.addEventListener('mouseenter', () => {
-            clearInterval(autoplay);
-        });
-
-        this.next.addEventListener('mouseenter', () => {
-            clearInterval(autoplay);
-        });
-
-        this.prev.addEventListener('mouseenter', () => {
-            clearInterval(autoplay);
-        });
     }
 
 // #3
     bindTriggers() {
         this.next.addEventListener('click', () => {
             this.nextSlide();
-            // добавляяем в конец списка этих элементов опредленный элемент 
+            // // добавляяем в конец списка этих элементов опредленный элемент 
             // this.container.appendChild(this.slides[0]); //  БЫЛО 3стр
             // this.decorizeSlides();
 
@@ -100,7 +82,25 @@ export default class MiniSlider extends Slider {
             // let active = this.slides[this.slides.length - 1];
             // // нам необходим поставить его на первую позицию перед первым слайдом
             // this.container.insertBefore(active, this.slides[0]);
-            // this.decorizeSlides(); БЫЛО 5стр 
+            // this.decorizeSlides(); // ,было 5стр
+        });
+    }
+
+    autoplayGo() {
+        let autoplay = setInterval(() => {
+            this.nextSlide();
+        }, 4000);
+        // находим родителия например первого слайдера по факту это весь слайдеры (Все
+        this.slides[0].parentNode.addEventListener('mouseenter', () => {
+            clearInterval(autoplay);
+        });
+
+        this.next.addEventListener('mouseenter', () => {
+            clearInterval(autoplay);
+        });
+
+        this.prev.addEventListener('mouseenter', () => {
+            clearInterval(autoplay);
         });
     }
 
@@ -136,3 +136,31 @@ export default class MiniSlider extends Slider {
 
 
 // отфильтровать все слайдеры которые находятся внутри слайдера узнать какой из слайдов является кнопкой то есть тегом button и не назначать ему клласс 
+
+
+
+// moveButtonsToEnd() {
+//     this.slides.forEach((slide, i) => {
+//         if(slide.tagName === "BUTTON") {
+//             this.container.appendChild(this.slides[i]);
+//         }
+//     });
+// }
+// Метод будет вызываться каждый раз как нажимается одна из кнопок.
+
+// nextSlide() {
+//     this.container.appendChild(this.slides[0]);
+//     this.decorizeSlides();
+//     this.moveButtonsToEnd();
+// }
+
+// bindTriggers() {
+//     this.next.addEventListener('click', () => this.nextSlide());
+
+//     this.prev.addEventListener('click', () => {
+//         let active = this.slides[0];
+//         this.container.insertBefore(active, this.slides[this.slides.length - 1]);
+//         this.decorizeSlides();
+//         this.moveButtonsToEnd();
+//     });
+// }

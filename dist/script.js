@@ -1,6 +1,102 @@
 /******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/js/modules/difference.js":
+/*!**************************************!*\
+  !*** ./src/js/modules/difference.js ***!
+  \**************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ Difference; }
+/* harmony export */ });
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.object.to-string.js */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each.js */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var Difference = /*#__PURE__*/function () {
+  function Difference(oldOfficer, newOfficer, items) {
+    _classCallCheck(this, Difference);
+
+    this.oldOfficer = document.querySelector(oldOfficer);
+    this.newOfficer = document.querySelector(newOfficer); // items мы будем полчать из каждого столбика
+
+    this.oldItems = this.oldOfficer.querySelectorAll(items);
+    this.newItems = this.newOfficer.querySelectorAll(items); // this.items = items; можно избавится от свойса this.items Так как оно приходит внуртир аргумента имы его сразу используем
+
+    this.oldCounter = 0;
+    this.newCounter = 0;
+  }
+
+  _createClass(Difference, [{
+    key: "bindTriggers",
+    value: function bindTriggers(container, items, counter) {
+      container.querySelector('.plus').addEventListener('click', function () {
+        if (counter !== items.length - 2) {
+          items[counter].style.display = 'flex';
+          counter++;
+        } else {
+          items[counter].style.display = 'flex';
+          items[items.length - 1].remove(); // если мы с вами дошли до последней карточки которую на нужно показать мы ее показываем и полсе этого удаляем последний блок 
+        }
+      }); // сократили
+      // this.newOfficer.querySelector('.plus').addEventListener('click', () => {
+      //     if (this.newCounter !== this.newItems.length -2) {
+      //         this.newItems[this.newCounter].style.display = 'flex';
+      //         this.newCounter++;
+      //     } else {
+      //         this.newItems[this.newCounter].style.display = 'flex';
+      //         this.newItems[this.newItems.length - 1].remove();
+      //     }
+      // });
+    } // 1
+
+  }, {
+    key: "hideItems",
+    value: function hideItems(items) {
+      // делаем мы это для того чтобы мы могли оставить последний элемент на странице
+      items.forEach(function (item, i, arr) {
+        // проверяем что тот элемент массива его номер по порядку не является послденим в этой node коллекции
+        if (i !== arr.length - 1) {
+          // и если мы попали не на последний элемент массива то берем..
+          item.style.display = 'none'; // когда цикл Freach дойдет до последнего элемента соответсвено условие перстанет выполнятся и последний элемент не скроется
+        }
+      }); // сократил
+      // this.newItems.forEach((item, i, arr) => {
+      //     if (i !== arr.length - 1) {
+      //         item.style.display = 'none';
+      //     }
+      // });
+    } // 0
+
+  }, {
+    key: "init",
+    value: function init() {
+      this.hideItems(this.oldItems);
+      this.hideItems(this.newItems);
+      this.bindTriggers(this.oldOfficer, this.oldItems, this.oldCounter);
+      this.bindTriggers(this.newOfficer, this.newItems, this.newCounter);
+    }
+  }]);
+
+  return Difference;
+}();
+
+
+
+/***/ }),
+
 /***/ "./src/js/modules/playVideo.js":
 /*!*************************************!*\
   !*** ./src/js/modules/playVideo.js ***!
@@ -438,25 +534,58 @@ var MiniSlider = /*#__PURE__*/function (_Slider) {
       //     this.container.appendChild(this.slides[0]);
       //     this.decorizeSlides();
       // }
-      // Пропуск кнопок при переключение слайдеров номер два
-      for (var i = 1; i < this.slides.length; i++) {
+      // // Пропуск кнопок при переключение слайдеров номер два
+      for (var i = this.slides.length - 1; i > 0; i--) {
         if (this.slides[i].tagName !== "BUTTON") {
-          this.container.appendChild(this.slides[0]);
+          // так что если элемент с конца не кнопка то берем последний элемент и помещаем перед первым
+          var active = this.slides[0];
+          this.container.insertBefore(active, this.slides[i]);
           this.decorizeSlides();
-          break;
-        } else {
-          this.container.appendChild(this.slides[i]);
-          i--;
+          break; // когда условие выполнится этот цикл остановится когда последний слайд отправится на первую позицию
         }
       }
+    } // #3
+
+  }, {
+    key: "bindTriggers",
+    value: function bindTriggers() {
+      var _this2 = this;
+
+      this.next.addEventListener('click', function () {
+        _this2.nextSlide(); // // добавляяем в конец списка этих элементов опредленный элемент 
+        // this.container.appendChild(this.slides[0]); //  БЫЛО 3стр
+        // this.decorizeSlides();
+
+      });
+      this.prev.addEventListener('click', function () {
+        // классчиеский паттерн количетсво слайдов минус один 
+        // я хочу перебрать каждый элемент в массиве slides с конца и если последний элемент который там есть будет являтся кнопкой то я буду его пропускать 
+        for (var i = _this2.slides.length - 1; i > 0; i--) {
+          if (_this2.slides[i].tagName !== "BUTTON") {
+            // так что если элемент с конца не кнопка то берем последний элемент и помещаем перед первым
+            var active = _this2.slides[i];
+
+            _this2.container.insertBefore(active, _this2.slides[0]);
+
+            _this2.decorizeSlides();
+
+            break; // когда условие выполнится этот цикл остановится когда последний слайд отправится на первую позицию
+          }
+        } // // active - последний слайд в нашем списке
+        // let active = this.slides[this.slides.length - 1];
+        // // нам необходим поставить его на первую позицию перед первым слайдом
+        // this.container.insertBefore(active, this.slides[0]);
+        // this.decorizeSlides(); // ,было 5стр
+
+      });
     }
   }, {
     key: "autoplayGo",
     value: function autoplayGo() {
-      var _this2 = this;
+      var _this3 = this;
 
       var autoplay = setInterval(function () {
-        _this2.nextSlide();
+        _this3.nextSlide();
       }, 4000); // находим родителия например первого слайдера по факту это весь слайдеры (Все
 
       this.slides[0].parentNode.addEventListener('mouseenter', function () {
@@ -467,40 +596,6 @@ var MiniSlider = /*#__PURE__*/function (_Slider) {
       });
       this.prev.addEventListener('mouseenter', function () {
         clearInterval(autoplay);
-      });
-    } // #3
-
-  }, {
-    key: "bindTriggers",
-    value: function bindTriggers() {
-      var _this3 = this;
-
-      this.next.addEventListener('click', function () {
-        _this3.nextSlide(); // добавляяем в конец списка этих элементов опредленный элемент 
-        // this.container.appendChild(this.slides[0]); //  БЫЛО 3стр
-        // this.decorizeSlides();
-
-      });
-      this.prev.addEventListener('click', function () {
-        // классчиеский паттерн количетсво слайдов минус один 
-        // я хочу перебрать каждый элемент в массиве slides с конца и если последний элемент который там есть будет являтся кнопкой то я буду его пропускать 
-        for (var i = _this3.slides.length - 1; i > 0; i--) {
-          if (_this3.slides[i].tagName !== "BUTTON") {
-            // так что если элемент с конца не кнопка то берем последний элемент и помещаем перед первым
-            var active = _this3.slides[i];
-
-            _this3.container.insertBefore(active, _this3.slides[0]);
-
-            _this3.decorizeSlides();
-
-            break; // когда условие выполнится этот цикл остановится когда последний слайд отправится на первую позицию
-          }
-        } // // active - последний слайд в нашем списке
-        // let active = this.slides[this.slides.length - 1];
-        // // нам необходим поставить его на первую позицию перед первым слайдом
-        // this.container.insertBefore(active, this.slides[0]);
-        // this.decorizeSlides(); БЫЛО 5стр 
-
       });
     } // #1
 
@@ -531,6 +626,28 @@ var MiniSlider = /*#__PURE__*/function (_Slider) {
 
   return MiniSlider;
 }(_slider__WEBPACK_IMPORTED_MODULE_11__["default"]); // отфильтровать все слайдеры которые находятся внутри слайдера узнать какой из слайдов является кнопкой то есть тегом button и не назначать ему клласс 
+// moveButtonsToEnd() {
+//     this.slides.forEach((slide, i) => {
+//         if(slide.tagName === "BUTTON") {
+//             this.container.appendChild(this.slides[i]);
+//         }
+//     });
+// }
+// Метод будет вызываться каждый раз как нажимается одна из кнопок.
+// nextSlide() {
+//     this.container.appendChild(this.slides[0]);
+//     this.decorizeSlides();
+//     this.moveButtonsToEnd();
+// }
+// bindTriggers() {
+//     this.next.addEventListener('click', () => this.nextSlide());
+//     this.prev.addEventListener('click', () => {
+//         let active = this.slides[0];
+//         this.container.insertBefore(active, this.slides[this.slides.length - 1]);
+//         this.decorizeSlides();
+//         this.moveButtonsToEnd();
+//     });
+// }
 
 
 
@@ -4772,6 +4889,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_slider_slider_main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/slider/slider-main */ "./src/js/modules/slider/slider-main.js");
 /* harmony import */ var _modules_slider_slider_mini__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/slider/slider-mini */ "./src/js/modules/slider/slider-mini.js");
 /* harmony import */ var _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/playVideo */ "./src/js/modules/playVideo.js");
+/* harmony import */ var _modules_difference__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/difference */ "./src/js/modules/difference.js");
+
 
 
 
@@ -4811,6 +4930,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
   var player = new _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__["default"]('.showup .play', '.overlay');
   player.init();
+  new _modules_difference__WEBPACK_IMPORTED_MODULE_3__["default"]('.officerold', '.officernew', '.officer__card-item').init();
 });
 }();
 /******/ })()

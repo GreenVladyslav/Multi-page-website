@@ -20,7 +20,7 @@ export default class MainSlider extends Slider {
         try {
             // это свойство мы с вами получаем до того мы где нибудь исопльзуем showSlides
             this.hanson.style.opacity = '0'; 
-
+            // 26. Всплывающий со временем блок
             if (n === 3) {
                 this.hanson.classList.add('animated');
                 setTimeout(() => {

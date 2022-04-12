@@ -1,5 +1,5 @@
 import Slider from "./slider";
-
+// 29. Реализация вторичных слайдеров (меньших размеров)
 export default class MiniSlider extends Slider {
     constructor(container, next, prev, activeClass, animate, autoplay) {
         super(container, next, prev, activeClass, animate, autoplay);

@@ -5,6 +5,7 @@ export default class VideoPlayer {
         this.close = this.overlay.querySelector('.close');
         //YouTube IFrame Player API
         // https://developers.google.com/youtube/iframe_api_reference?hl=ru
+        // 27. Создаем видеоплеер в модальном окне
     }
     // #4
     bindTriggers() {

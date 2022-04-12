@@ -1,4 +1,5 @@
 export default class Difference {
+    // 30. Реализация блока с различиями
     constructor(oldOfficer, newOfficer, items) {
         this.oldOfficer = document.querySelector(oldOfficer);
         this.newOfficer = document.querySelector(newOfficer);
@@ -15,9 +16,11 @@ export default class Difference {
         container.querySelector('.plus').addEventListener('click', () => {
             if (counter !== items.length -2) {
                 items[counter].style.display = 'flex';
+                items[counter].classList.add('animated', 'fadeInUp');
                 counter++;
             } else {
                 items[counter].style.display = 'flex';
+                items[counter].classList.remove('animated', 'fadeInUp');
                 items[items.length - 1].remove();
                 // если мы с вами дошли до последней карточки которую на нужно показать мы ее показываем и полсе этого удаляем последний блок 
             }

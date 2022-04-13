@@ -55,6 +55,7 @@ gulp.task("watch", () => {
     browsersync.init({
         server: {
             baseDir: "./dist/",
+            // Запускаются все html страницы по определенному адресу .Можно изменять вторую страницу  
             serveStaticOptions: {
                 extensions: ["html"]
             }

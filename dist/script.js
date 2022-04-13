@@ -30,14 +30,16 @@ var Difference = /*#__PURE__*/function () {
   function Difference(oldOfficer, newOfficer, items) {
     _classCallCheck(this, Difference);
 
-    this.oldOfficer = document.querySelector(oldOfficer);
-    this.newOfficer = document.querySelector(newOfficer); // items мы будем полчать из каждого столбика
+    try {
+      this.oldOfficer = document.querySelector(oldOfficer);
+      this.newOfficer = document.querySelector(newOfficer); // items мы будем полчать из каждого столбика
 
-    this.oldItems = this.oldOfficer.querySelectorAll(items);
-    this.newItems = this.newOfficer.querySelectorAll(items); // this.items = items; можно избавится от свойса this.items Так как оно приходит внуртир аргумента имы его сразу используем
+      this.oldItems = this.oldOfficer.querySelectorAll(items);
+      this.newItems = this.newOfficer.querySelectorAll(items); // this.items = items; можно избавится от свойса this.items Так как оно приходит внуртир аргумента имы его сразу используем
 
-    this.oldCounter = 0;
-    this.newCounter = 0;
+      this.oldCounter = 0;
+      this.newCounter = 0;
+    } catch (e) {}
   }
 
   _createClass(Difference, [{
@@ -86,10 +88,12 @@ var Difference = /*#__PURE__*/function () {
   }, {
     key: "init",
     value: function init() {
-      this.hideItems(this.oldItems);
-      this.hideItems(this.newItems);
-      this.bindTriggers(this.oldOfficer, this.oldItems, this.oldCounter);
-      this.bindTriggers(this.newOfficer, this.newItems, this.newCounter);
+      try {
+        this.hideItems(this.oldItems);
+        this.hideItems(this.newItems);
+        this.bindTriggers(this.oldOfficer, this.oldItems, this.oldCounter);
+        this.bindTriggers(this.newOfficer, this.newItems, this.newCounter);
+      } catch (e) {}
     }
   }]);
 
@@ -306,6 +310,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 // import mask from './mask';
 // import checkMailInputs from './checkMailInputs';
 var Form = /*#__PURE__*/function () {
+  // constructor(forms, url) { можно добавить еще один аргумент например URL   подставить в this.path более динамчески если пару адрессов
   function Form(form) {
     _classCallCheck(this, Form);
 
@@ -700,11 +705,11 @@ var MainSlider = /*#__PURE__*/function (_Slider) {
 
   var _super = _createSuper(MainSlider);
 
-  function MainSlider(btns) {
+  function MainSlider(btns, nextModule, prevModule) {
     _classCallCheck(this, MainSlider);
 
     // this.slides Будет тоже по умолчанию так как он зависит от this.container.children
-    return _super.call(this, btns); // автоматические наследует 
+    return _super.call(this, btns, nextModule, prevModule); // автоматические наследует 
   } // метод
 
 
@@ -756,35 +761,81 @@ var MainSlider = /*#__PURE__*/function (_Slider) {
     key: "plusSlides",
     value: function plusSlides(n) {
       this.showSlides(this.slideIndex += n);
-    } // главный метод - render 
-
+    }
   }, {
-    key: "render",
-    value: function render() {
+    key: "bindTriggers",
+    value: function bindTriggers() {
       var _this2 = this;
 
-      try {
-        this.hanson = document.querySelector('.hanson');
-      } catch (error) {} // это псевдомассив даже если одна кнопка querselecall
-
-
+      // это псевдомассив даже если одна кнопка querselecall
       this.btns.forEach(function (item) {
         item.addEventListener('click', function () {
           // пока что у нас одна стрелка вперед
           _this2.plusSlides(1);
         }); // Родитель доступен через parentNode
 
-        item.parentNode.previousElementSibling.addEventListener('click', function (e) {
-          // это ссылка поэтому обьект события и preventDefault
+        try {
+          item.parentNode.previousElementSibling.addEventListener('click', function (e) {
+            // это ссылка поэтому обьект события и preventDefault
+            e.preventDefault();
+            _this2.slideIndex = 1; // при клике на download перекидвает на первую страницу
+
+            _this2.showSlides(_this2.slideIndex);
+          });
+        } catch (e) {}
+      }); // рабочий метод а в toggleBtn я скоратил просто
+      // // Добавляем кнопки на вторую страницу 
+      // // ALL так как на каждом модуле на каждой страничке своя стрелка
+      // this.prev.forEach(item => {
+      //     item.addEventListener('click', (e) => {
+      //         e.stopPropagation();
+      //         e.preventDefault();
+      //         this.plusSlides(-1);
+      //     });
+      // });
+      // this.next.forEach(item => {
+      //     item.addEventListener('click', (e) => {
+      //         // Всплытие событий срабатывает несколько раз ! отменяем его чтобы не листать по два слайда
+      //         e.stopPropagation();
+      //         e.preventDefault();
+      //         this.plusSlides(1);
+      //     });
+      // });
+    }
+  }, {
+    key: "toggeleBtn",
+    value: function toggeleBtn(btnModule, sliderNumber) {
+      var _this3 = this;
+
+      btnModule.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
           e.preventDefault();
-          _this2.slideIndex = 1;
 
-          _this2.showSlides(_this2.slideIndex);
+          _this3.plusSlides(sliderNumber);
         });
-      }); // обращаясь к this первому это значит что мы обращаемся к свойству или методу которое существует внутри
-      // экземплряра класса  
+      });
+    } // главный метод - render 
 
-      this.showSlides(this.slideIndex);
+  }, {
+    key: "render",
+    value: function render() {
+      // 33. Главный слайдер второй страницы, всплытие событий
+      // Исправление ошибки так как селекторы кнопок одинковые в slider, modulPageSlider
+      // Если такой конейнер был передан при вызове классва в main.js в slider, modulePage действительн существует на этой странице то мы будем выполнять эти действия
+      // Если на странице у нас есть такой элемент (не undefind) то мы будем выполнять эти действия если нет то нет
+      if (this.container) {
+        try {
+          this.hanson = document.querySelector('.hanson');
+        } catch (error) {} // обращаясь к this первому это значит что мы обращаемся к свойству или методу которое существует внутри
+        // экземплряра класса  
+
+
+        this.showSlides(this.slideIndex);
+        this.bindTriggers();
+        this.toggeleBtn(this.nextModule, 1);
+        this.toggeleBtn(this.prevModule, -1);
+      }
     }
   }]);
 
@@ -906,27 +957,29 @@ var MiniSlider = /*#__PURE__*/function (_Slider) {
   }, {
     key: "nextSlide",
     value: function nextSlide() {
-      // if(this.slides[1].tagName == "BUTTON" && this.slides[2].tagName == "BUTTON") {
-      //     this.container.appendChild(this.slides[0]); // slide с отзывом
-      //     this.container.appendChild(this.slides[1]); // btn
-      //     this.container.appendChild(this.slides[2]); // btn 2
+      // if (this.slides[1].tagName == "BUTTON" && this.slides[2].tagName == "BUTTON") {
+      //     this.container.appendChild(this.slides[0]); // Slide
+      //     this.container.appendChild(this.slides[1]); // Btn
+      //     this.container.appendChild(this.slides[2]); // Btn
       //     this.decorizeSlides();
-      // } else if (this.slides[1].tagName == "BUTTON") {
-      //     this.container.appendChild(this.slides[0]); // slide с отзывом
-      //     this.container.appendChild(this.slides[1]); // btn
+      // } else if (this.slides[1].tagName == "BUTTON"){
+      //     this.container.appendChild(this.slides[0]); // Slide
+      //     this.container.appendChild(this.slides[1]); // Btn
       //     this.decorizeSlides();
       // } else {
       //     this.container.appendChild(this.slides[0]);
       //     this.decorizeSlides();
       // }
-      // // Пропуск кнопок при переключение слайдеров номер два
-      for (var i = this.slides.length - 1; i > 0; i--) {
+      // // Пропуск кнопок при переключение 
+      for (var i = 1; i < this.slides.length; i++) {
         if (this.slides[i].tagName !== "BUTTON") {
-          // так что если элемент с конца не кнопка то берем последний элемент и помещаем перед первым
-          var active = this.slides[0];
-          this.container.insertBefore(active, this.slides[i]);
+          this.container.appendChild(this.slides[0]);
           this.decorizeSlides();
           break; // когда условие выполнится этот цикл остановится когда последний слайд отправится на первую позицию
+          // так что если элемент с конца не кнопка то берем последний элемент и помещаем перед первым
+        } else {
+          this.container.appendChild(this.slides[i]);
+          i--;
         }
       }
     } // #3
@@ -971,7 +1024,7 @@ var MiniSlider = /*#__PURE__*/function (_Slider) {
 
       var autoplay = setInterval(function () {
         _this3.nextSlide();
-      }, 4000); // находим родителия например первого слайдера по факту это весь слайдеры (Все
+      }, 2500); // находим родителия например первого слайдера по факту это весь слайдеры (Все
 
       this.slides[0].parentNode.addEventListener('mouseenter', function () {
         clearInterval(autoplay);
@@ -989,23 +1042,25 @@ var MiniSlider = /*#__PURE__*/function (_Slider) {
     value: function init() {
       var _this4 = this;
 
-      this.container.style.cssText = "\n            display: flex;\n            flex-wrap: wrap;\n            overflow: hidden;\n            align-items: flex-start;\n        ";
-      this.bindTriggers();
-      this.decorizeSlides();
+      try {
+        this.container.style.cssText = "\n            display: flex;\n            flex-wrap: wrap;\n            overflow: hidden;\n            align-items: flex-start;\n            ";
+        this.bindTriggers();
+        this.decorizeSlides();
 
-      if (this.autoplay) {
-        this.autoplayGo();
-      }
+        if (this.autoplay) {
+          this.autoplayGo();
+        }
 
-      this.slides[0].parentNode.addEventListener('mouseleave', function () {
-        _this4.autoplayGo();
-      });
-      this.next.addEventListener('mouseleave', function () {
-        _this4.autoplayGo();
-      });
-      this.prev.addEventListener('mouseleave', function () {
-        _this4.autoplayGo();
-      });
+        this.slides[0].parentNode.addEventListener('mouseleave', function () {
+          _this4.autoplayGo();
+        });
+        this.next.addEventListener('mouseleave', function () {
+          _this4.autoplayGo();
+        });
+        this.prev.addEventListener('mouseleave', function () {
+          _this4.autoplayGo();
+        });
+      } catch (e) {}
     }
   }]);
 
@@ -1068,6 +1123,10 @@ function Slider() {
       next = _ref$next === void 0 ? null : _ref$next,
       _ref$prev = _ref.prev,
       prev = _ref$prev === void 0 ? null : _ref$prev,
+      _ref$prevModule = _ref.prevModule,
+      prevModule = _ref$prevModule === void 0 ? null : _ref$prevModule,
+      _ref$nextModule = _ref.nextModule,
+      nextModule = _ref$nextModule === void 0 ? null : _ref$nextModule,
       _ref$activeClass = _ref.activeClass,
       activeClass = _ref$activeClass === void 0 ? '' : _ref$activeClass,
       animate = _ref.animate,
@@ -1078,12 +1137,17 @@ function Slider() {
   // те вещи которыое описывают наш слайдер до того как он будет работать
   this.container = document.querySelector(container); // получить всех детей которые находятся на этой странице children – коллекция детей, которые являются элементами.
 
-  this.slides = this.container.children; // потому что в первом слайдера одна стрелка, а во втором слайде две стрелки
+  try {
+    this.slides = this.container.children;
+  } catch (e) {} // потому что в первом слайдера одна стрелка, а во втором слайде две стрелки
   // буду использовать псевдомассив элементов даже если там будет один
+
 
   this.btns = document.querySelectorAll(btns);
   this.prev = document.querySelector(prev);
   this.next = document.querySelector(next);
+  this.prevModule = document.querySelectorAll(prevModule);
+  this.nextModule = document.querySelectorAll(nextModule);
   this.activeClass = activeClass;
   this.animate = animate;
   this.autoplay = autoplay; // текущий слайд и куда мы будем двигатся дальше
@@ -7487,13 +7551,22 @@ window.addEventListener('DOMContentLoaded', function () {
   }); // у каждого обьекта slider будут свои методы и свои свойства и причем они будут различны , вызываем render Так как это обьект
 
   slider.render(); // метод render обьеденяет всед ругие функции которые были прописаны в этом классе
+  // #2 str modules
 
+  var modulePageSlider = new _modules_slider_slider_main__WEBPACK_IMPORTED_MODULE_0__["default"]({
+    container: '.moduleapp',
+    btns: '.next',
+    prevModule: '.prevmodule',
+    nextModule: '.nextmodule'
+  });
+  modulePageSlider.render();
   var showUpSlider = new _modules_slider_slider_mini__WEBPACK_IMPORTED_MODULE_1__["default"]({
     container: '.showup__content-slider',
     next: '.showup__next',
     prev: '.showup__prev',
     activeClass: 'card-active',
-    animate: true
+    animate: true,
+    autoplay: true
   });
   showUpSlider.init();
   var modulesSlider = new _modules_slider_slider_mini__WEBPACK_IMPORTED_MODULE_1__["default"]({
@@ -7517,7 +7590,12 @@ window.addEventListener('DOMContentLoaded', function () {
   player.init();
   new _modules_difference__WEBPACK_IMPORTED_MODULE_3__["default"]('.officerold', '.officernew', '.officer__card-item').init();
   new _modules_forms__WEBPACK_IMPORTED_MODULE_4__["default"]('.form').bindPostData();
-});
+}); // Разделить скрипты пример
+// if (document.URL.includes('modules') {
+//     // скрипты для страницы modules 
+// } else {
+//     // скрипты для главной страницы
+// }
 }();
 /******/ })()
 ;

@@ -167,6 +167,7 @@
 // import checkMailInputs from './checkMailInputs';
 
 export default class Form {
+    // constructor(forms, url) { можно добавить еще один аргумент например URL   подставить в this.path более динамчески если пару адрессов
     constructor(form) {
         this.form = document.querySelectorAll(form);
         this.inputs = document.querySelectorAll('input');

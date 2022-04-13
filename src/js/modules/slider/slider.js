@@ -5,18 +5,22 @@ export default class Slider {
         btns = null,
         next = null,
         prev = null,
+        prevModule = null,
+        nextModule = null,
         activeClass = '',
         animate,
         autoplay } = {}) {
         // те вещи которыое описывают наш слайдер до того как он будет работать
         this.container = document.querySelector(container);
         // получить всех детей которые находятся на этой странице children – коллекция детей, которые являются элементами.
-        this.slides = this.container.children;
+        try {this.slides = this.container.children;} catch(e){}
         // потому что в первом слайдера одна стрелка, а во втором слайде две стрелки
         // буду использовать псевдомассив элементов даже если там будет один
         this.btns = document.querySelectorAll(btns);
         this.prev = document.querySelector(prev);
         this.next = document.querySelector(next);
+        this.prevModule = document.querySelectorAll(prevModule);
+        this.nextModule = document.querySelectorAll(nextModule);
         this.activeClass = activeClass;
         this.animate = animate;
         this.autoplay = autoplay;

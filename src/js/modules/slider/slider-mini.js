@@ -28,14 +28,14 @@ export default class MiniSlider extends Slider {
     }
 //#4
     nextSlide() {
-        // if(this.slides[1].tagName == "BUTTON" && this.slides[2].tagName == "BUTTON") {
-        //     this.container.appendChild(this.slides[0]); // slide с отзывом
-        //     this.container.appendChild(this.slides[1]); // btn
-        //     this.container.appendChild(this.slides[2]); // btn 2
+        // if (this.slides[1].tagName == "BUTTON" && this.slides[2].tagName == "BUTTON") {
+        //     this.container.appendChild(this.slides[0]); // Slide
+        //     this.container.appendChild(this.slides[1]); // Btn
+        //     this.container.appendChild(this.slides[2]); // Btn
         //     this.decorizeSlides();
-        // } else if (this.slides[1].tagName == "BUTTON") {
-        //     this.container.appendChild(this.slides[0]); // slide с отзывом
-        //     this.container.appendChild(this.slides[1]); // btn
+        // } else if (this.slides[1].tagName == "BUTTON"){
+        //     this.container.appendChild(this.slides[0]); // Slide
+        //     this.container.appendChild(this.slides[1]); // Btn
         //     this.decorizeSlides();
         // } else {
         //     this.container.appendChild(this.slides[0]);
@@ -43,14 +43,16 @@ export default class MiniSlider extends Slider {
         // }
 
 
-        // // Пропуск кнопок при переключение слайдеров номер два
-        for (let i = this.slides.length -1; i > 0; i--) {
+        // // Пропуск кнопок при переключение 
+        for (let i = 1; i < this.slides.length; i++) {
             if (this.slides[i].tagName !== "BUTTON") {
-                // так что если элемент с конца не кнопка то берем последний элемент и помещаем перед первым
-                let active = this.slides[0];
-                this.container.insertBefore(active, this.slides[i]);
+                this.container.appendChild(this.slides[0]);
                 this.decorizeSlides();
                 break; // когда условие выполнится этот цикл остановится когда последний слайд отправится на первую позицию
+                // так что если элемент с конца не кнопка то берем последний элемент и помещаем перед первым
+            } else {
+                this.container.appendChild(this.slides[i]);
+                i--;
             }
         }
     }
@@ -89,7 +91,7 @@ export default class MiniSlider extends Slider {
     autoplayGo() {
         let autoplay = setInterval(() => {
             this.nextSlide();
-        }, 4000);
+        }, 2500);
         // находим родителия например первого слайдера по факту это весь слайдеры (Все
         this.slides[0].parentNode.addEventListener('mouseenter', () => {
             clearInterval(autoplay);
@@ -106,32 +108,34 @@ export default class MiniSlider extends Slider {
 
 // #1
     init() {
-        this.container.style.cssText = `
+        try {
+            this.container.style.cssText = `
             display: flex;
             flex-wrap: wrap;
             overflow: hidden;
             align-items: flex-start;
-        `;
+            `;
 
-        this.bindTriggers();
-        this.decorizeSlides();
+            this.bindTriggers();
+            this.decorizeSlides();
 
-        if (this.autoplay) {
-            this.autoplayGo();
-        }
+            if (this.autoplay) {
+                this.autoplayGo();
+            }
 
-        this.slides[0].parentNode.addEventListener('mouseleave', () => {
-            this.autoplayGo();
-        });
+            this.slides[0].parentNode.addEventListener('mouseleave', () => {
+                this.autoplayGo();
+            });
 
-        this.next.addEventListener('mouseleave', () => {
-            this.autoplayGo();
-        });
+            this.next.addEventListener('mouseleave', () => {
+                this.autoplayGo();
+            });
 
-        this.prev.addEventListener('mouseleave', () => {
-            this.autoplayGo();
-        });
-    }
+            this.prev.addEventListener('mouseleave', () => {
+                this.autoplayGo();
+            });
+        } catch(e){}
+    } 
 }
 
 

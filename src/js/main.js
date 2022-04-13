@@ -10,13 +10,17 @@ window.addEventListener('DOMContentLoaded', () => {
     // у каждого обьекта slider будут свои методы и свои свойства и причем они будут различны , вызываем render Так как это обьект
     slider.render();
     // метод render обьеденяет всед ругие функции которые были прописаны в этом классе
+    // #2 str modules
+    const modulePageSlider = new MainSlider({container:'.moduleapp', btns: '.next', prevModule: '.prevmodule', nextModule: '.nextmodule'});
+    modulePageSlider.render();
 
     const showUpSlider = new MiniSlider({
         container: '.showup__content-slider',
         next: '.showup__next',
         prev: '.showup__prev',
         activeClass: 'card-active',
-        animate: true
+        animate: true,
+        autoplay: true
     });
     showUpSlider.init();
 
@@ -43,4 +47,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
     new Difference('.officerold', '.officernew', '.officer__card-item').init();
     new Form('.form').bindPostData();
-});     
+});  
+
+
+
+// Разделить скрипты пример
+// if (document.URL.includes('modules') {
+//     // скрипты для страницы modules 
+// } else {
+//     // скрипты для главной страницы
+// }

@@ -284,7 +284,7 @@ export default class Form {
 
                 setTimeout(() => {
                     item.style.display = 'none';
-                }, 500);
+                }, 0);
 
                 item.classList.add('animated', 'fadeOutRight');
 

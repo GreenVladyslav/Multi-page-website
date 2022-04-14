@@ -1,9 +1,9 @@
 import Slider from './slider';
 
 export default class MainSlider extends Slider {
-    constructor(btns, nextModule, prevModule) {
+    constructor(container, btns, nextModule, prevModule) {
         // this.slides Будет тоже по умолчанию так как он зависит от this.container.children
-        super(btns, nextModule, prevModule);
+        super(container, btns, nextModule, prevModule);
         // автоматические наследует 
     }
 
@@ -62,18 +62,20 @@ export default class MainSlider extends Slider {
                 this.plusSlides(1);
             });
             // Родитель доступен через parentNode
-            try{
-                item.parentNode.previousElementSibling.addEventListener('click', (e) => {
-                    // это ссылка поэтому обьект события и preventDefault
-                    e.preventDefault();
+
+            item.parentNode.previousElementSibling.addEventListener('click', (e) => {
+
+                if (item.getAttribute('href')){
+                    e.preventDefault(); // это ссылка поэтому обьект события и preventDefault
                     this.slideIndex = 1;
                     // при клике на download перекидвает на первую страницу
-    
                     this.showSlides(this.slideIndex);
-                });
-            } catch(e) {}
-           
-        });
+                }
+            });
+        }); 
+
+
+        
 
         // рабочий метод а в toggleBtn я скоратил просто
         // // Добавляем кнопки на вторую страницу 

@@ -3,6 +3,8 @@ import MiniSlider from './modules/slider/slider-mini';
 import VideoPlayer from './modules/playVideo';
 import Difference from './modules/difference';
 import Form from './modules/forms';
+import ShowInfo from './modules/showInfo';
+import Download from './modules/download';
 
 window.addEventListener('DOMContentLoaded', () => {
     // уже импортирован класс и мы на основе этого класса создаем новый обьект котороый и будем использовать
@@ -43,10 +45,13 @@ window.addEventListener('DOMContentLoaded', () => {
     feedSlider.init();
     // .showup общая секция чтобы мы четко сказали в какой секции есть кнопка play потому что она несоклько раз будет повторятся 
     new VideoPlayer('.showup .play', '.overlay').init();
-    new VideoPlayer('.module__video-item .play', '.overlay').init();
+    new VideoPlayer('.module__video-item .play', '.overlay').init(); // Loan 13.1
 
     new Difference('.officerold', '.officernew', '.officer__card-item').init();
     new Form('.form').bindPostData();
+
+    new ShowInfo('.plus').init();
+    new Download('.download').init();
 });  
 
 

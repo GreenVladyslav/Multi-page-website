@@ -104,6 +104,83 @@ var Difference = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./src/js/modules/download.js":
+/*!************************************!*\
+  !*** ./src/js/modules/download.js ***!
+  \************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ Download; }
+/* harmony export */ });
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.object.to-string.js */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each.js */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var Download = /*#__PURE__*/function () {
+  function Download(triggers) {
+    _classCallCheck(this, Download);
+
+    this.btns = document.querySelectorAll(triggers); // В релаьно проекте будут разыне файлы в каждом модуле ну и путь к файлу соотвествено разный можно использовать switch case
+    // определяем по какому-то параметру какая это кнопка и там будет подставить тот путь которыой соотвесуте этой кнопке
+
+    this.path = 'assets/img/mainbg.jpg';
+  } // метод за формирования запроса что пользователь скачивает файл
+
+
+  _createClass(Download, [{
+    key: "downloadItem",
+    value: function downloadItem(path) {
+      // Для того чтобы скаачать элемент со страницы мы должны клинкуть по ссылке у которой есть специальный атрибут
+      var element = document.createElement('a'); // создали виртуальный элемент ссылки и атрибута 
+
+      element.setAttribute('href', path); // path - тот путь который приходит в функцию this.downloadItem(this.path)
+
+      element.setAttribute('download', 'nice_picture'); // атрибут download 
+
+      element.style.display = 'none'; // на странице он не должен появится мы не видим его 
+
+      document.body.appendChild(element); // помещаем его ссылка есть на странице
+
+      element.click(); // вот так тоже можно вызвать событие
+
+      document.body.removeChild(element); // после того как действие при клике совершится мы его убираем (ссылка отработа)
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      var _this = this;
+
+      this.btns.forEach(function (item) {
+        // если будет пустой массив то он просто не запустится
+        item.addEventListener('click', function () {
+          //обязательно callbacl ввиде стрелочной
+          _this.downloadItem(_this.path); //this.path можно сформировать динамически в заисимтости от кнопки на которую мы нажали
+          // можно определить у item data атрибут и в зависимости от него подставить опредленные значения
+
+        });
+      });
+    }
+  }]);
+
+  return Download;
+}();
+
+
+
+/***/ }),
+
 /***/ "./src/js/modules/forms.js":
 /*!*********************************!*\
   !*** ./src/js/modules/forms.js ***!
@@ -682,6 +759,66 @@ var VideoPlayer = /*#__PURE__*/function () {
   return VideoPlayer;
 }(); // каждый экзмепляр это отдельный обьект 
 
+
+
+
+/***/ }),
+
+/***/ "./src/js/modules/showInfo.js":
+/*!************************************!*\
+  !*** ./src/js/modules/showInfo.js ***!
+  \************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ ShowInfo; }
+/* harmony export */ });
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.object.to-string.js */ "./node_modules/core-js/modules/es.object.to-string.js");
+/* harmony import */ var core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each.js */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var ShowInfo = /*#__PURE__*/function () {
+  function ShowInfo(triggers) {
+    _classCallCheck(this, ShowInfo);
+
+    this.btns = document.querySelectorAll(triggers);
+  } // 13 пункт тех задания
+
+
+  _createClass(ShowInfo, [{
+    key: "showInfo",
+    value: function showInfo() {
+      this.btns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          // btn.closest('.module__info-show').nextElementSibling.style.display = 'block';
+          var sibling = btn.parentNode.nextElementSibling; // sibling.nextElementSibling.style.display = 'block';
+
+          sibling.classList.toggle('msg');
+          sibling.style.marginTop = '20px';
+          sibling.classList.add('animated', 'fadeInDown');
+        });
+      });
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      this.showInfo();
+    }
+  }]);
+
+  return ShowInfo;
+}();
 
 
 
@@ -7642,6 +7779,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/playVideo */ "./src/js/modules/playVideo.js");
 /* harmony import */ var _modules_difference__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/difference */ "./src/js/modules/difference.js");
 /* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/forms */ "./src/js/modules/forms.js");
+/* harmony import */ var _modules_showInfo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/showInfo */ "./src/js/modules/showInfo.js");
+/* harmony import */ var _modules_download__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/download */ "./src/js/modules/download.js");
+
+
 
 
 
@@ -7691,9 +7832,12 @@ window.addEventListener('DOMContentLoaded', function () {
   feedSlider.init(); // .showup общая секция чтобы мы четко сказали в какой секции есть кнопка play потому что она несоклько раз будет повторятся 
 
   new _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__["default"]('.showup .play', '.overlay').init();
-  new _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__["default"]('.module__video-item .play', '.overlay').init();
+  new _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__["default"]('.module__video-item .play', '.overlay').init(); // Loan 13.1
+
   new _modules_difference__WEBPACK_IMPORTED_MODULE_3__["default"]('.officerold', '.officernew', '.officer__card-item').init();
   new _modules_forms__WEBPACK_IMPORTED_MODULE_4__["default"]('.form').bindPostData();
+  new _modules_showInfo__WEBPACK_IMPORTED_MODULE_5__["default"]('.plus').init();
+  new _modules_download__WEBPACK_IMPORTED_MODULE_6__["default"]('.download').init();
 }); // Разделить скрипты пример
 // if (document.URL.includes('modules') {
 //     // скрипты для страницы modules 
